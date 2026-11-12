@@ -1,0 +1,38 @@
+{
+  "name": "shan-shui-memories",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "山水拾忆 — an immersive, procedural Chinese landscape memory experience",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5173",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "typecheck": "tsc --noEmit --pretty false",
+    "test:visual": "node tests/objects.mjs && node tests/integration.mjs",
+    "test:mobile": "node tests/mobile.mjs && node tests/mobile-v4.mjs",
+    "test:photos": "node tests/photo-system.mjs && node tests/photo-manage.mjs && node tests/photo-multi.mjs",
+    "test:state": "node tests/state-stack.mjs"
+  },
+  "dependencies": {
+    "@react-three/drei": "9.117.3",
+    "@react-three/fiber": "8.17.10",
+    "@react-three/postprocessing": "2.16.3",
+    "gsap": "3.12.7",
+    "postprocessing": "6.36.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.170.0",
+    "zustand": "4.5.5"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@types/three": "0.170.0",
+    "@vitejs/plugin-react": "4.3.4",
+    "playwright-core": "1.49.1",
+    "typescript": "5.6.3",
+    "vite": "5.4.21"
+  }
+}
+
