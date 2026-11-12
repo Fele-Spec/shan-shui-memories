@@ -55,13 +55,13 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/pooh/pooh-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '朋友们的合影',
+        caption: '一起走过的日子 · 01',
       },
       {
         src: asset('assets/user/pooh/pooh-02.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '围坐在一起的朋友们',
+        caption: '围坐一桌的夜晚 · 02',
       },
     ],
   },
@@ -87,13 +87,13 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/bamboo/bamboo-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '树影下抬头的人',
+        caption: '抬头，看见光 · 01',
       },
       {
         src: asset('assets/user/bamboo/bamboo-02.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '林间小道上的背影',
+        caption: '林间的一段路 · 02',
       },
     ],
   },
@@ -118,13 +118,13 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/pearl/pearl-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '在远山前微笑的人',
+        caption: '山与海的午后 · 01',
       },
       {
         src: asset('assets/user/pearl/pearl-02.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '窗边的温柔侧影',
+        caption: '窗边的一束光 · 02',
       },
     ],
   },
@@ -149,13 +149,13 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/beads/beads-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '拼豆拼成的狐狸头像',
+        caption: '拼豆 · 小狐狸 · 01',
       },
       {
         src: asset('assets/user/beads/beads-02.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '拼豆拼成的绿色小鸟',
+        caption: '拼豆 · 小鹦鹉 · 02',
       },
     ],
   },
@@ -180,13 +180,13 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/microphone/microphone-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '舞台上的合影',
+        caption: '灯光亮起的时刻 · 01',
       },
       {
         src: asset('assets/user/microphone/microphone-02.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '舞台上的主持与演出',
+        caption: '属于我们的舞台 · 02',
       },
     ],
   },
@@ -212,8 +212,8 @@ export const memories: Memory[] = [
     images: [
       {
         src: asset('assets/user/leopard/leopard-01.webp'),
-        alt: '私人照片未随公开版本发布',
-        caption: '照片未随公开版本发布',
+        alt: '一只安静望向镜头的小猫',
+        caption: '家里那只小兽 · 01',
       },
     ],
   },

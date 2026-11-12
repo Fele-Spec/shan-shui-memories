@@ -2124,3 +2124,107 @@ img {
 }
 
 
+
+/* V5 photo access gate (UI code gate; photos are publishable) */
+.password-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 66;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+.password-gate__veil {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(4, 8, 7, 0.72);
+  backdrop-filter: blur(10px);
+  cursor: default;
+}
+.password-gate__card {
+  position: relative;
+  width: min(92vw, 360px);
+  padding: 34px 30px 26px;
+  text-align: center;
+  border: 1px solid rgba(214, 183, 124, 0.34);
+  background: rgba(10, 18, 15, 0.94);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+}
+.password-gate__eyebrow {
+  margin: 0 0 20px;
+  color: var(--gold);
+  font-size: 9px;
+  letter-spacing: 0.24em;
+}
+.password-gate__glyph {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 10px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(214, 183, 124, 0.5);
+  color: var(--gold);
+  font-size: 20px;
+}
+.password-gate h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+}
+.password-gate__hint {
+  margin: 0 0 22px;
+  color: var(--paper-dim);
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+}
+.password-gate label {
+  display: block;
+  margin-bottom: 8px;
+  text-align: left;
+  color: var(--paper-dim);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+}
+.password-gate input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(214, 183, 124, 0.35);
+  background: rgba(0, 0, 0, 0.28);
+  color: var(--paper);
+  font: 24px/1 "Times New Roman", serif;
+  letter-spacing: 0.45em;
+  text-align: center;
+  outline: none;
+}
+.password-gate input:focus { border-color: rgba(214, 183, 124, 0.72); }
+.password-gate__error {
+  min-height: 20px;
+  margin: 8px 0 0;
+  color: #d69a8a;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+.password-gate__actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+.password-gate__actions button {
+  flex: 1;
+  padding: 11px 10px;
+  border: 1px solid rgba(214, 183, 124, 0.35);
+  background: transparent;
+  color: var(--paper-dim);
+  font: 11px/1 "Songti SC", serif;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+}
+.password-gate__actions .password-gate__submit {
+  border-color: rgba(214, 183, 124, 0.65);
+  background: rgba(214, 183, 124, 0.13);
+  color: var(--gold-bright);
+}
+.password-gate__actions button:disabled { opacity: 0.5; cursor: wait; }

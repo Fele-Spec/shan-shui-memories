@@ -6,6 +6,7 @@ import { SunsetGallery } from './components/SunsetGallery'
 import { Lightbox } from './components/Lightbox'
 import { FocusOverlay } from './components/FocusOverlay'
 import { PhotoManager } from './components/PhotoManager'
+import { PasswordGate } from './components/PasswordGate'
 import { PhotoLibraryProvider } from './photos/PhotoLibrary'
 import { SceneErrorBoundary, hasWebGL } from './components/SceneErrorBoundary'
 import { useExperience } from './store/useExperience'
@@ -16,10 +17,12 @@ export default function App() {
   const galleryOpen = useExperience((s) => s.galleryOpen)
   const focusMode = useExperience((s) => s.focusMode)
   const photoManagerOpen = useExperience((s) => s.photoManagerOpen)
+  const passwordGateOpen = useExperience((s) => s.passwordGateOpen)
   const lightboxOpen = useExperience((s) => s.lightboxOpen)
   const closeLightbox = useExperience((s) => s.closeLightbox)
   const closeMemory = useExperience((s) => s.closeMemory)
   const closePhotoManager = useExperience((s) => s.closePhotoManager)
+  const closePasswordGate = useExperience((s) => s.closePasswordGate)
   const exitFocus = useExperience((s) => s.exitFocus)
   const exitSunset = useExperience((s) => s.exitSunset)
   const setIntroVisible = useExperience((s) => s.setIntroVisible)
@@ -43,6 +46,7 @@ export default function App() {
       if (e.key !== 'Escape') return
       const s = useExperience.getState()
       if (s.photoManagerOpen) closePhotoManager()
+      else if (s.passwordGateOpen) closePasswordGate()
       else if (s.lightboxOpen) closeLightbox()
       else if (s.galleryOpen) closeMemory()
       else if (s.focusMode) exitFocus()
@@ -50,7 +54,7 @@ export default function App() {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [closeLightbox, closeMemory, closePhotoManager, exitFocus, exitSunset])
+  }, [closeLightbox, closeMemory, closePasswordGate, closePhotoManager, exitFocus, exitSunset])
 
   useEffect(() => {
     let done = false
@@ -74,8 +78,8 @@ export default function App() {
       <div
         className="experience"
         data-sunset={sunsetMode}
-        data-focus={focusMode && !galleryOpen && !photoManagerOpen}
-        data-gallery={galleryOpen || lightboxOpen || photoManagerOpen}
+        data-focus={focusMode && !galleryOpen && !photoManagerOpen && !passwordGateOpen}
+        data-gallery={galleryOpen || lightboxOpen || photoManagerOpen || passwordGateOpen}
       >
         <SceneErrorBoundary>
           <Scene />
@@ -89,9 +93,11 @@ export default function App() {
         <SunsetGallery />
         <Lightbox />
         <FocusOverlay />
+        <PasswordGate />
         <PhotoManager />
         <LoadingScreen />
       </div>
     </PhotoLibraryProvider>
   )
 }
+

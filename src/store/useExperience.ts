@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import type { MemoryId } from '../data/memories'
 
 type LightboxSource = 'memory' | 'sunset' | null
+type PasswordAction = 'gallery' | 'manager' | null
 
 type ExperienceState = {
   introVisible: boolean
@@ -19,16 +20,24 @@ type ExperienceState = {
   interactionLocked: boolean
   photoManagerOpen: boolean
   photoManagerMemoryId: MemoryId | null
+  passwordGateOpen: boolean
+  passwordGateMemoryId: MemoryId | null
+  passwordAction: PasswordAction
   quality: 'high' | 'medium' | 'low'
   setIntroVisible: (v: boolean) => void
   setHoveredMemory: (id: MemoryId | null) => void
   focusMemory: (id: MemoryId) => void
+  /** Opens the access-code gate, not the gallery directly. */
   openGallery: () => void
+  /** Called by the gate after a correct code. */
+  unlockGallery: () => void
+  requestPhotoManager: (id: MemoryId) => void
+  closePasswordGate: () => void
   closeGallery: () => void
   exitFocus: () => void
-  /** Backwards-compatible name: first click focuses, second opens gallery. */
+  /** Backwards-compatible name: first click focuses, second asks for the code. */
   openMemory: (id: MemoryId) => void
-  /** Backwards-compatible close: closes gallery first, then exits focus. */
+  /** Backwards-compatible close: closes gate/gallery first, then exits focus. */
   closeMemory: () => void
   setGalleryIndex: (i: number) => void
   openPhotoManager: (id: MemoryId) => void
@@ -42,6 +51,8 @@ type ExperienceState = {
   setAudioEnabled: (v: boolean) => void
   setQuality: (q: 'high' | 'medium' | 'low') => void
 }
+
+const locked = { interactionLocked: true }
 
 export const useExperience = create<ExperienceState>((set, get) => ({
   introVisible: true,
@@ -59,6 +70,9 @@ export const useExperience = create<ExperienceState>((set, get) => ({
   interactionLocked: false,
   photoManagerOpen: false,
   photoManagerMemoryId: null,
+  passwordGateOpen: false,
+  passwordGateMemoryId: null,
+  passwordAction: null,
   quality: 'high',
 
   setIntroVisible: (v) => set({ introVisible: v }),
@@ -67,9 +81,17 @@ export const useExperience = create<ExperienceState>((set, get) => ({
   focusMemory: (id) => {
     const s = get()
     if (s.sunsetMode) return
-    // Second click on the already-focused object opens the gallery.
+    // Second click on the already-focused object asks for the code first.
     if (s.activeMemoryId === id && s.focusMode && !s.galleryOpen && !s.photoManagerOpen) {
-      set({ galleryOpen: true, galleryIndex: 0, lightboxOpen: false, interactionLocked: true })
+      if (s.passwordGateOpen) return
+      set({
+        passwordGateOpen: true,
+        passwordGateMemoryId: id,
+        passwordAction: 'gallery',
+        galleryOpen: false,
+        lightboxOpen: false,
+        ...locked,
+      })
       return
     }
     set({
@@ -81,14 +103,73 @@ export const useExperience = create<ExperienceState>((set, get) => ({
       hoveredMemoryId: null,
       photoManagerOpen: false,
       photoManagerMemoryId: null,
-      interactionLocked: true,
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
+      ...locked,
     })
   },
 
   openGallery: () => {
-    if (!get().activeMemoryId) return
-    set({ galleryOpen: true, galleryIndex: 0, lightboxOpen: false, interactionLocked: true })
+    const s = get()
+    if (!s.activeMemoryId || s.passwordGateOpen) return
+    set({
+      passwordGateOpen: true,
+      passwordGateMemoryId: s.activeMemoryId,
+      passwordAction: 'gallery',
+      galleryOpen: false,
+      lightboxOpen: false,
+      ...locked,
+    })
   },
+
+  unlockGallery: () => {
+    const s = get()
+    if (!s.passwordGateOpen) return
+    if (s.passwordAction === 'manager') {
+      set({
+        passwordGateOpen: false,
+        passwordGateMemoryId: null,
+        passwordAction: null,
+        photoManagerOpen: true,
+        photoManagerMemoryId: s.passwordGateMemoryId,
+        activeMemoryId: s.passwordGateMemoryId,
+        focusMode: true,
+        ...locked,
+      })
+      return
+    }
+    set({
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
+      galleryOpen: true,
+      galleryIndex: 0,
+      lightboxOpen: false,
+      ...locked,
+    })
+  },
+
+  requestPhotoManager: (id) =>
+    set({
+      activeMemoryId: id,
+      focusMode: true,
+      passwordGateOpen: true,
+      passwordGateMemoryId: id,
+      passwordAction: 'manager',
+      galleryOpen: false,
+      lightboxOpen: false,
+      photoManagerOpen: false,
+      ...locked,
+    }),
+
+  closePasswordGate: () =>
+    set({
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
+      interactionLocked: Boolean(get().focusMode || get().galleryOpen || get().sunsetMode),
+    }),
 
   closeGallery: () => {
     set({
@@ -96,7 +177,10 @@ export const useExperience = create<ExperienceState>((set, get) => ({
       galleryIndex: 0,
       lightboxOpen: false,
       lightboxSource: null,
-      interactionLocked: true,
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
+      ...locked,
     })
   },
 
@@ -110,14 +194,19 @@ export const useExperience = create<ExperienceState>((set, get) => ({
       lightboxSource: null,
       photoManagerOpen: false,
       photoManagerMemoryId: null,
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
       hoveredMemoryId: null,
       interactionLocked: false,
     }),
 
   openMemory: (id) => get().focusMemory(id),
+
   closeMemory: () => {
     const s = get()
-    if (s.galleryOpen) s.closeGallery()
+    if (s.passwordGateOpen) s.closePasswordGate()
+    else if (s.galleryOpen) s.closeGallery()
     else if (s.focusMode) s.exitFocus()
   },
 
@@ -129,7 +218,10 @@ export const useExperience = create<ExperienceState>((set, get) => ({
       photoManagerMemoryId: id,
       activeMemoryId: get().activeMemoryId ?? id,
       focusMode: true,
-      interactionLocked: true,
+      passwordGateOpen: false,
+      passwordGateMemoryId: null,
+      passwordAction: null,
+      ...locked,
       hoveredMemoryId: null,
     }),
 
@@ -142,7 +234,7 @@ export const useExperience = create<ExperienceState>((set, get) => ({
 
   enterSunset: () => {
     const s = get()
-    if (s.sunsetMode || s.galleryOpen || s.focusMode || s.activeMemoryId || s.photoManagerOpen) return
+    if (s.sunsetMode || s.galleryOpen || s.focusMode || s.activeMemoryId || s.photoManagerOpen || s.passwordGateOpen) return
     set({ sunsetMode: true, sunsetGalleryOpen: false, interactionLocked: true })
   },
 

@@ -8,8 +8,9 @@ export function FocusOverlay() {
   const focusMode = useExperience((s) => s.focusMode)
   const galleryOpen = useExperience((s) => s.galleryOpen)
   const managerOpen = useExperience((s) => s.photoManagerOpen)
+  const gateOpen = useExperience((s) => s.passwordGateOpen)
   const openGallery = useExperience((s) => s.openGallery)
-  const openPhotoManager = useExperience((s) => s.openPhotoManager)
+  const requestPhotoManager = useExperience((s) => s.requestPhotoManager)
   const exitFocus = useExperience((s) => s.exitFocus)
   const { records } = usePhotoLibrary()
   const memory = getMemory(activeId)
@@ -19,7 +20,7 @@ export function FocusOverlay() {
     [records, activeId]
   )
 
-  if (!memory || !focusMode || galleryOpen || managerOpen) return null
+  if (!memory || !focusMode || galleryOpen || managerOpen || gateOpen) return null
   const count = memory.images.length + userCount
 
   return (
@@ -39,10 +40,10 @@ export function FocusOverlay() {
           <button type="button" className="focus-btn focus-btn--primary" onClick={openGallery}>
             查看照片 <span>{String(count).padStart(2, '0')}</span>
           </button>
-          <button type="button" className="focus-btn" onClick={() => openPhotoManager(memory.id)}>
+          <button type="button" className="focus-btn" onClick={() => requestPhotoManager(memory.id)}>
             添加照片
           </button>
-          <button type="button" className="focus-btn" onClick={() => openPhotoManager(memory.id)}>
+          <button type="button" className="focus-btn" onClick={() => requestPhotoManager(memory.id)}>
             照片管理
           </button>
         </div>
@@ -60,3 +61,4 @@ export function FocusOverlay() {
     </div>
   )
 }
+

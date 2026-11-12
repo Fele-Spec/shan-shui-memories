@@ -1,18 +1,15 @@
-# ASSET CREDITS · Public Demo
+# ASSET CREDITS
 
-This public repository contains **no personal photographs and no third-party character artwork**.
+## Personal memory photos
 
-## Built-in gallery placeholders
+The 11 WebP photos under `public/assets/user/` and the Pooh/leopard cutout references under `public/assets/objects/` are supplied by the project owner. The owner has authorized publishing them on this public demo. They remain the owner's private material for any other use; do not redistribute them separately.
 
-The 12 images under `public/assets/user/` are generated neutral posters that say “私人影像未随公开版本发布 / PRIVATE PHOTO NOT INCLUDED”. They are part of this public demo and contain no portrait, no personal photo, and no copyrighted character image.
-
-The Pooh/leopard object textures in this build are also generated neutral “private image not included” plaques. They are not the private reference cutouts used in the local edition.
+The in-page access dialog is a UI gate, not a server-enforced confidentiality control. Direct asset URLs are public by design.
 
 ## Terrain DEM
 
 - AWS Terrain Tiles / Mapzen Terrarium, z14, Xingping area.
-- Elevation data is used for a real heightfield and river mask.
-- Source tiles are not redistributed in this repository; the derived heightfield is under `public/assets/dem/`.
+- Derived heightfield/river mask under `public/assets/dem/`.
 
 ## Landscape photography (sunset)
 
@@ -46,4 +43,4 @@ React 18.3.1 (MIT), Vite 5.4.21 (MIT), TypeScript 5.6.3 (Apache-2.0), Three.js 0
 
 ## Rights note
 
-This is a code-only public demo. Do not add personal photos or third-party character art to this repository unless you have the rights to publish them. The site never uploads visitor photos to a server.
+The project owner is responsible for confirming portrait, character-IP and stock-photo rights for the public deployment. The Pooh reference is a third-party character image; the owner has authorized this public demo but that does not grant a general license to others.
